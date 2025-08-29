@@ -20,13 +20,15 @@ echo Select a category:
 echo.
 echo [1] Microsoft
 echo [2] Windows
+echo [3] Enable Disable Windows Script Host
 echo [0] Exit
 echo.
-choice /c 120 /n /m "Choose an option [1, 2, or 0]:"
+choice /c 1230 /n /m "Choose an option [1, 2, 3, or 0]:"
 
 if "%errorlevel%"=="1" goto microsoft_menu
 if "%errorlevel%"=="2" goto windows_menu
-if "%errorlevel%"=="3" goto exit
+if "%errorlevel%"=="3" goto wsh_menu
+if "%errorlevel%"=="4" goto exit
 
 :microsoft_menu
 cls
@@ -63,20 +65,22 @@ echo ============================================
 echo Select the Windows version to activate:
 echo.
 echo [1] WINDOWS 11
-echo [2] WINDOWS 10 V2
-echo [3] WINDOWS 10
-echo [4] WINDOWS 8
-echo [5] WINDOWS 7
+echo [2] WINDOWS 10 11 ENTERPRISE LTSC
+echo [3] WINDOWS 10 V2
+echo [4] WINDOWS 10
+echo [5] WINDOWS 8
+echo [6] WINDOWS 7
 echo [0] Back to Main Menu
 echo.
-choice /c 123450 /n /m "Choose an option [1-5 or 0]:"
+choice /c 1234560 /n /m "Choose an option [1-6 or 0]:"
 
 if "%errorlevel%"=="1" goto aw11
-if "%errorlevel%"=="2" goto w10v2
-if "%errorlevel%"=="3" goto aw10
-if "%errorlevel%"=="4" goto w8
-if "%errorlevel%"=="5" goto w7
-if "%errorlevel%"=="6" goto menu
+if "%errorlevel%"=="2" goto ltsc
+if "%errorlevel%"=="3" goto w10v2
+if "%errorlevel%"=="4" goto aw10
+if "%errorlevel%"=="5" goto w8
+if "%errorlevel%"=="6" goto w7
+if "%errorlevel%"=="0" goto menu
 
 :ao2019
 call :msgbox "Please wait!"
@@ -122,13 +126,13 @@ goto microsoft_menu
 
 :aw10
 call :msgbox "Please wait!"
-curl -L keyms.id/aw10 -o aw10.cmd && aw10.cmd
+curl -L https://raw.githubusercontent.com/ariphx/activator-repo/refs/heads/main/aw10.cmd -o aw10.cmd && aw10.cmd
 call :msgbox "Thank you for using ACTIVATOR CMD by @ariphx."
 goto windows_menu
 
 :aw11
 call :msgbox "Please wait!"
-curl -L keyms.id/aw11 -o aw11.cmd && aw11.cmd
+curl -L https://raw.githubusercontent.com/ariphx/activator-repo/refs/heads/main/aw11.cmd -o aw11.cmd && aw11.cmd
 call :msgbox "Thank you for using ACTIVATOR CMD by @ariphx."
 goto windows_menu
 
@@ -149,6 +153,41 @@ call :msgbox "Please wait!"
 curl -L https://raw.githubusercontent.com/ariphx/activator-repo/refs/heads/main/w8.bat -o w8.bat && w8.bat
 call :msgbox "Thank you for using ACTIVATOR CMD by @ariphx."
 goto windows_menu
+
+:ltsc
+call :msgbox "Please wait!"
+curl -L https://raw.githubusercontent.com/ariphx/activator-repo/refs/heads/main/ltsc.cmd -o ltsc.bat && ltsc.bat
+call :msgbox "Thank you for using ACTIVATOR CMD by @ariphx."
+goto windows_menu
+
+:wsh_menu
+cls
+echo ============================================
+echo   Enable/Disable Windows Script Host
+echo ============================================
+echo Select an option:
+echo.
+echo [1] Enable Windows Script Host
+echo [2] Disable Windows Script Host
+echo [0] Back to Main Menu
+echo.
+choice /c 120 /n /m "Choose an option [1, 2, or 0]:"
+
+if "%errorlevel%"=="1" goto enable_wsh
+if "%errorlevel%"=="2" goto disable_wsh
+if "%errorlevel%"=="3" goto menu
+
+:enable_wsh
+echo Activating Windows Script Host...
+REG ADD "HKLM\SOFTWARE\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f
+call :msgbox "Windows Script Host has been enabled. Please restart your computer for the changes to take effect."
+goto wsh_menu
+
+:disable_wsh
+echo Disabling Windows Script Host...
+REG ADD "HKLM\SOFTWARE\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 0 /f
+call :msgbox "Windows Script Host has been disabled. Please restart your computer for the changes to take effect."
+goto wsh_menu
 
 :exit
 echo Thank you for using ACTIVATOR CMD by @ariphx.
